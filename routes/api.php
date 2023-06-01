@@ -1,21 +1,26 @@
 <?php
+require_once 'app/controllers/RateController.php';
+require_once 'app/controllers/EmailController.php';
+require_once 'app/controllers/MailController.php';
 
-use App\Controllers\EmailController;
 use App\Controllers\RateController;
+use App\Controllers\EmailController;
+use App\Controllers\MailController;
 
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-if ($requestUri === '/rate' && $requestMethod === 'GET') {
-    $rateController = new RateController();
-    $rateController->rate();
-} elseif ($requestUri === '/subscribe' && $requestMethod === 'POST') {
-    $emailController = new EmailController();
-    $emailController->subscribe();
-} elseif ($requestUri === '/sendEmails' && $requestMethod === 'POST') {
-    $emailController = new EmailController();
-    $emailController->emails();
-} else {
-    http_response_code(404);
-    echo 'Not Found';
+$routes = [
+    ['uri' => '/rate', 'method' => 'GET', 'controller' => RateController::class, 'action' => 'getCurrentRate'],
+    ['uri' => '/subscribe', 'method' => 'POST', 'controller' => EmailController::class, 'action' => 'subscribeEmail'],
+    ['uri' => '/sendEmails', 'method' => 'POST', 'controller' => MailController::class, 'action' => 'sendRateEmails']
+];
+
+foreach ($routes as $route) {
+    if ($route['uri'] === $requestUri && $route['method'] === $requestMethod) {
+        $controllerName = $route['controller'];
+        $action = $route['action'];
+        $controller = new $controllerName();
+        $controller->$action();
+    }
 }
