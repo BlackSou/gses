@@ -1,3 +1,3 @@
 <?php
-
-require_once __DIR__ . '/routes/api.php';
+require_once 'vendor/autoload.php';
+require_once 'routes/api.php';
