@@ -1,0 +1,20 @@
+version: '3'
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      MAIL_HOST: smtp.host.com
+      MAIL_USERNAME: your_mail@mail.com
+      MAIL_PASSWORD: your_pass
+      MAIL_PORT: 25
+      MAIL_DRIVER: smtp
+      MAIL_ENCRYPTION: tls
+      MAIL_FROM_ADDRESS: from_mail@mail.com
+      MAIL_FROM_NAME: GsesRate
